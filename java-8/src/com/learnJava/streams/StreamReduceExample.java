@@ -7,10 +7,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.maxBy;
-import static java.util.stream.Collectors.toList;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class StreamReduceExample {
 
@@ -42,12 +40,20 @@ public class StreamReduceExample {
         return studentOptional;
     }
 
+    public static List<Student> highestGPA (){
+       List<Student> sorted = StudentDataBase.getAllStudents().stream()
+                .sorted(Comparator.comparing(Student::getGpa).reversed())
+               .collect(Collectors.toList());
+        double highestGPA = sorted.get(0).getGpa();
 
+       return  sorted.stream().filter(student -> student.getGpa()==highestGPA).collect(Collectors.toList());
+
+     }
 
 
     public static void main(String[] args) {
 
-        List<Integer> integerList = Arrays.asList(1,3,5,7);
+       /* List<Integer> integerList = Arrays.asList(1,3,5,7);
         //List<Integer> integerList = Arrays.asList();
 
         System.out.println("Result is : " + performMultiplication(integerList));
@@ -60,6 +66,9 @@ public class StreamReduceExample {
         }
 
         System.out.println(combineStudentNames());
-        System.out.println(getHighestGradeStudent().get());
+        System.out.println(getHighestGradeStudent().get()); */
+
+        List<Student> bestStudents = highestGPA();
+        System.out.println(bestStudents);
     }
 }
